@@ -15,8 +15,6 @@
     --accent: #185fa5;
     --danger: #a32d2d;
     --success: #0f6e56;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -30,29 +28,26 @@
       --success: #5dcaa5;
     }
   }
-  :root[data-theme="dark"] {
-    --bg: #1c1c1a;
-    --card: #262624;
-    --border: #3a3a37;
-    --text: #ece9e2;
-    --text-sub: #a4a29a;
-    --accent: #85b7eb;
-    --danger: #f09595;
-    --success: #5dcaa5;
-  }
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   * { box-sizing: border-box; }
   body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont,
+      "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     display: flex;
     justify-content: center;
     padding: 24px 16px 40px;
   }
-  .wrap { width: 100%; max-width: 480px; }
-  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  .wrap {
+    width: 100%;
+    max-width: 480px;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
   .month-row {
     display: flex;
     align-items: center;
@@ -72,7 +67,7 @@
     padding: 2px 0;
   }
   .month-row input#yearInput { width: 72px; }
-  .month-row input#monthInput { width: 50px; }
+  .month-row input#monthInput { width: 32px; }
   .card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -80,7 +75,10 @@
     padding: 16px;
     margin-bottom: 16px;
   }
-  table { width: 100%; border-collapse: collapse; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
   th {
     text-align: left;
     font-size: 12px;
@@ -88,9 +86,15 @@
     font-weight: 500;
     padding: 4px 6px 8px;
   }
-  th.amount-col, td.amount-cell { text-align: right; }
-  td { padding: 4px; }
-  input[type="text"], input[type="number"] {
+  th.amount-col,
+  td.amount-cell {
+    text-align: right;
+  }
+  td {
+    padding: 4px;
+  }
+  input[type="text"],
+  input.money-input {
     width: 100%;
     background: transparent;
     border: 1px solid var(--border);
@@ -99,7 +103,9 @@
     font-size: 15px;
     color: var(--text);
   }
-  input[type="number"] { text-align: right; }
+  input.money-input {
+    text-align: right;
+  }
   .del-btn {
     background: none;
     border: none;
@@ -109,8 +115,14 @@
     padding: 4px 8px;
     line-height: 1;
   }
-  .del-btn:active { color: var(--danger); }
-  .chk-cell { width: 28px; text-align: center; padding: 4px 2px; }
+  .del-btn:active {
+    color: var(--danger);
+  }
+  .chk-cell {
+    width: 28px;
+    text-align: center;
+    padding: 4px 2px;
+  }
   .chk-cell input[type="checkbox"] {
     width: 18px;
     height: 18px;
@@ -134,37 +146,37 @@
     padding: 10px 2px;
     font-size: 15px;
   }
-  .row-line + .row-line { border-top: 1px solid var(--border); }
-  .row-line .label { color: var(--text-sub); }
-  .row-line .value { font-weight: 600; }
-  .value.total { font-size: 17px; }
-  .value.diff-pos { color: var(--success); }
-  .value.diff-neg { color: var(--danger); }
+  .row-line + .row-line {
+    border-top: 1px solid var(--border);
+  }
+  .row-line .label {
+    color: var(--text-sub);
+  }
+  .row-line .value {
+    font-weight: 600;
+  }
+  .value.total {
+    font-size: 17px;
+  }
+  .value.diff-pos {
+    color: var(--success);
+  }
+  .value.diff-neg {
+    color: var(--danger);
+  }
   .income-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
   }
-  .income-row input { max-width: 160px; }
-  footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 8px; }
-  .save-btn {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
+  .income-row input {
+    max-width: 160px;
   }
-  .save-btn:active { opacity: 0.85; }
-  .save-msg {
+  footer {
     text-align: center;
-    font-size: 13px;
-    color: var(--success);
-    height: 18px;
+    font-size: 12px;
+    color: var(--text-sub);
     margin-top: 8px;
   }
 </style>
@@ -176,182 +188,347 @@
     <input type="number" id="yearInput" inputmode="numeric">년
     <input type="number" id="monthInput" inputmode="numeric" min="1" max="12">월분
   </div>
-
   <div class="card">
     <div class="row-line">
       <span class="label">총 지출액</span>
       <span class="value total" id="totalExpense">0원</span>
     </div>
   </div>
-
   <div class="card">
     <table>
       <thead>
-        <tr><th>항목</th><th class="amount-col">지출액</th><th></th><th></th></tr>
+        <tr>
+          <th>항목</th>
+          <th class="amount-col">지출액</th>
+          <th></th>
+          <th></th>
+        </tr>
       </thead>
       <tbody id="rows"></tbody>
     </table>
     <button class="add-btn" id="addBtn">+ 항목 추가</button>
   </div>
-
   <div class="card">
     <div class="income-row">
       <span class="label">이번달 수입</span>
-      <input type="number" id="income" placeholder="0" inputmode="numeric">
+      <input
+        type="text"
+        id="income"
+        class="money-input"
+        inputmode="numeric"
+        placeholder="0"
+      >
     </div>
   </div>
-
   <div class="card">
     <div class="row-line">
       <span class="label">차액 (수입 - 지출)</span>
       <span class="value total" id="diff">0원</span>
     </div>
   </div>
-
-  <button class="save-btn" id="saveBtn">저장</button>
-  <div class="save-msg" id="saveMsg"></div>
-
-  <footer>입력한 내용은 이 브라우저에 자동 저장됩니다.</footer>
+  <footer>
+    입력한 내용은 자동 저장됩니다.
+  </footer>
 </div>
-
 <script>
 const STORAGE_KEY = 'monthly-budget-v1';
 const now = new Date();
-let state = { year: now.getFullYear(), month: now.getMonth() + 1, rows: [{ name: '월세', amount: 0, checked: false }], income: 0 };
-
+let state = {
+  year: now.getFullYear(),
+  month: now.getMonth() + 1,
+  rows: [
+    {
+      name: '월세',
+      amount: 0,
+      checked: false
+    }
+  ],
+  income: 0
+};
+/* 저장 */
+function save() {
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(state)
+    );
+  } catch (e) {}
+}
+/* 숫자 → 콤마 */
+function formatNumber(value) {
+  const num = Number(
+    String(value).replace(/,/g, '')
+  ) || 0;
+  return Math.round(num).toLocaleString('ko-KR');
+}
+/* 콤마 제거 후 숫자 */
+function parseNumber(value) {
+  return Number(
+    String(value).replace(/,/g, '')
+  ) || 0;
+}
+/* 원 표시 */
+function formatWon(value) {
+  return formatNumber(value) + '원';
+}
+/* 저장된 데이터 불러오기 */
 try {
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) state = JSON.parse(saved);
+  if (saved) {
+    state = JSON.parse(saved);
+  }
 } catch (e) {}
-
-if (!state.year) state.year = now.getFullYear();
-if (!state.month) state.month = now.getMonth() + 1;
+if (!state.year) {
+  state.year = now.getFullYear();
+}
+if (!state.month) {
+  state.month = now.getMonth() + 1;
+}
 if (!state.rows || state.rows.length === 0) {
-  state.rows = [{ name: '', amount: 0, checked: false }];
+  state.rows = [
+    {
+      name: '',
+      amount: 0,
+      checked: false
+    }
+  ];
 }
-
-function save() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
-}
-
-function formatWon(n) {
-  const v = Math.round(Number(n) || 0);
-  return v.toLocaleString('ko-KR') + '원';
-}
-
+/* 화면 표시 */
 function render() {
-  const tbody = document.getElementById('rows');
+  const tbody =
+    document.getElementById('rows');
   tbody.innerHTML = '';
   state.rows.forEach((row, i) => {
-    const tr = document.createElement('tr');
-
-    const nameTd = document.createElement('td');
-    const nameInput = document.createElement('input');
+    const tr =
+      document.createElement('tr');
+    /* 항목명 */
+    const nameTd =
+      document.createElement('td');
+    const nameInput =
+      document.createElement('input');
     nameInput.type = 'text';
     nameInput.placeholder = '항목명';
-    nameInput.value = row.name;
-    nameInput.addEventListener('input', (e) => {
-      state.rows[i].name = e.target.value;
-      save();
-    });
+    nameInput.value = row.name || '';
+    nameInput.addEventListener(
+      'input',
+      (e) => {
+        state.rows[i].name =
+          e.target.value;
+        save();
+      }
+    );
     nameTd.appendChild(nameInput);
-
-    const amtTd = document.createElement('td');
-    amtTd.className = 'amount-cell';
-    const amtInput = document.createElement('input');
-    amtInput.type = 'number';
+    /* 금액 */
+    const amtTd =
+      document.createElement('td');
+    amtTd.className =
+      'amount-cell';
+    const amtInput =
+      document.createElement('input');
+    amtInput.type = 'text';
     amtInput.inputMode = 'numeric';
+    amtInput.className =
+      'money-input';
     amtInput.placeholder = '0';
-    amtInput.value = row.amount || '';
-    amtInput.addEventListener('input', (e) => {
-      state.rows[i].amount = Number(e.target.value) || 0;
-      save();
-      updateTotals();
-    });
+    amtInput.value =
+      row.amount
+        ? formatNumber(row.amount)
+        : '';
+    amtInput.addEventListener(
+      'input',
+      (e) => {
+        const cursor =
+          e.target.selectionStart;
+        const before =
+          e.target.value;
+        const number =
+          parseNumber(before);
+        state.rows[i].amount =
+          number;
+        const formatted =
+          number
+            ? formatNumber(number)
+            : '';
+        e.target.value =
+          formatted;
+        save();
+        updateTotals();
+        /* 커서 위치 자연스럽게 유지 */
+        const diff =
+          formatted.length - before.length;
+        try {
+          e.target.setSelectionRange(
+            cursor + diff,
+            cursor + diff
+          );
+        } catch (err) {}
+      }
+    );
     amtTd.appendChild(amtInput);
-
-    const delTd = document.createElement('td');
-    const delBtn = document.createElement('button');
-    delBtn.className = 'del-btn';
+    /* 삭제 */
+    const delTd =
+      document.createElement('td');
+    const delBtn =
+      document.createElement('button');
+    delBtn.className =
+      'del-btn';
     delBtn.textContent = '−';
-    delBtn.setAttribute('aria-label', '항목 삭제');
-    delBtn.addEventListener('click', () => {
-      state.rows.splice(i, 1);
-      if (state.rows.length === 0) state.rows.push({ name: '', amount: 0, checked: false });
-      save();
-      render();
-      updateTotals();
-    });
+    delBtn.setAttribute(
+      'aria-label',
+      '항목 삭제'
+    );
+    delBtn.addEventListener(
+      'click',
+      () => {
+        state.rows.splice(i, 1);
+        if (state.rows.length === 0) {
+          state.rows.push({
+            name: '',
+            amount: 0,
+            checked: false
+          });
+        }
+        save();
+        render();
+        updateTotals();
+      }
+    );
     delTd.appendChild(delBtn);
-
-    const chkTd = document.createElement('td');
-    chkTd.className = 'chk-cell';
-    const chkInput = document.createElement('input');
-    chkInput.type = 'checkbox';
-    chkInput.checked = !!row.checked;
-    chkInput.setAttribute('aria-label', '항목 체크');
-    chkInput.addEventListener('change', (e) => {
-      state.rows[i].checked = e.target.checked;
-      save();
-    });
+    /* 체크 */
+    const chkTd =
+      document.createElement('td');
+    chkTd.className =
+      'chk-cell';
+    const chkInput =
+      document.createElement('input');
+    chkInput.type =
+      'checkbox';
+    chkInput.checked =
+      !!row.checked;
+    chkInput.setAttribute(
+      'aria-label',
+      '항목 체크'
+    );
+    chkInput.addEventListener(
+      'change',
+      (e) => {
+        state.rows[i].checked =
+          e.target.checked;
+        save();
+      }
+    );
     chkTd.appendChild(chkInput);
-
     tr.appendChild(nameTd);
     tr.appendChild(amtTd);
     tr.appendChild(delTd);
     tr.appendChild(chkTd);
     tbody.appendChild(tr);
   });
-
-  document.getElementById('income').value = state.income || '';
+  /* 수입 */
+  const income =
+    document.getElementById('income');
+  income.value =
+    state.income
+      ? formatNumber(state.income)
+      : '';
 }
-
+/* 총액 계산 */
 function updateTotals() {
-  const total = state.rows.reduce((sum, r) => sum + (Number(r.amount) || 0), 0);
-  const income = Number(state.income) || 0;
-  const diff = income - total;
-
-  document.getElementById('totalExpense').textContent = formatWon(total);
-  const diffEl = document.getElementById('diff');
-  diffEl.textContent = formatWon(diff);
-  diffEl.classList.remove('diff-pos', 'diff-neg');
-  diffEl.classList.add(diff >= 0 ? 'diff-pos' : 'diff-neg');
+  const total =
+    state.rows.reduce(
+      (sum, r) =>
+        sum + (Number(r.amount) || 0),
+      0
+    );
+  const income =
+    Number(state.income) || 0;
+  const diff =
+    income - total;
+  document.getElementById(
+    'totalExpense'
+  ).textContent =
+    formatWon(total);
+  const diffEl =
+    document.getElementById('diff');
+  diffEl.textContent =
+    formatWon(diff);
+  diffEl.classList.remove(
+    'diff-pos',
+    'diff-neg'
+  );
+  diffEl.classList.add(
+    diff >= 0
+      ? 'diff-pos'
+      : 'diff-neg'
+  );
 }
-
-document.getElementById('yearInput').value = state.year;
-document.getElementById('monthInput').value = state.month;
-
-document.getElementById('yearInput').addEventListener('input', (e) => {
-  state.year = Number(e.target.value) || state.year;
-  save();
-});
-document.getElementById('monthInput').addEventListener('input', (e) => {
-  state.month = Number(e.target.value) || state.month;
-  save();
-});
-
-document.getElementById('addBtn').addEventListener('click', () => {
-  state.rows.push({ name: '', amount: 0, checked: false });
-  save();
-  render();
-  updateTotals();
-});
-
-document.getElementById('income').addEventListener('input', (e) => {
-  state.income = Number(e.target.value) || 0;
-  save();
-  updateTotals();
-});
-
+/* 연도 */
+document.getElementById(
+  'yearInput'
+).value = state.year;
+document.getElementById(
+  'yearInput'
+).addEventListener(
+  'input',
+  (e) => {
+    state.year =
+      Number(e.target.value)
+      || state.year;
+    save();
+  }
+);
+/* 월 */
+document.getElementById(
+  'monthInput'
+).value = state.month;
+document.getElementById(
+  'monthInput'
+).addEventListener(
+  'input',
+  (e) => {
+    state.month =
+      Number(e.target.value)
+      || state.month;
+    save();
+  }
+);
+/* 항목 추가 */
+document.getElementById(
+  'addBtn'
+).addEventListener(
+  'click',
+  () => {
+    state.rows.push({
+      name: '',
+      amount: 0,
+      checked: false
+    });
+    save();
+    render();
+    updateTotals();
+  }
+);
+/* 수입 입력 */
+document.getElementById(
+  'income'
+).addEventListener(
+  'input',
+  (e) => {
+    const number =
+      parseNumber(e.target.value);
+    state.income =
+      number;
+    e.target.value =
+      number
+        ? formatNumber(number)
+        : '';
+    save();
+    updateTotals();
+  }
+);
+/* 시작 */
 render();
 updateTotals();
-
-document.getElementById('saveBtn').addEventListener('click', () => {
-  save();
-  const msg = document.getElementById('saveMsg');
-  msg.textContent = '저장되었습니다';
-  setTimeout(() => { msg.textContent = ''; }, 1500);
-});
 </script>
 </body>
 </html>
